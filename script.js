@@ -21,3 +21,19 @@ function getPlayerChoice() {
     }
 
 }
+
+function computeRound(playerChoice, computerChoice) {
+    let message;
+    if (playerChoice === computerChoice) {
+        message = `Draw! (${playerChoice})`;
+    } else if (playerChoice === "rock" && computerChoice === "scissors") {
+        message = `Player won! ${playerChoice} beats ${computerChoice}`;
+    } else if (playerChoice === "paper" && computerChoice === "rock") {
+        message = `Player won! ${playerChoice} beats ${computerChoice}`;
+    } else if (playerChoice === "scissors" && computerChoice === "paper") {
+        message = `Player won! ${playerChoice} beats ${computerChoice}`;
+    } else {
+        message = `Player loses! ${computerChoice} beats ${playerChoice}`;
+    }
+    return message;
+}
