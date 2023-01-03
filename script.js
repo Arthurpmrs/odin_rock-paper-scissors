@@ -46,16 +46,38 @@ function computeRound(playerChoice, computerChoice) {
 }
 
 function game(rounds) {
+    let computerScore = 0;
+    let playerScore = 0;
+
     for (let i = 0; i < rounds; i++) {
         const playerChoice = getPlayerChoice();
         if (playerChoice === null) {
-            break;
+            console.log("Game interrupted.")
+            return false;
         }
         const computerChoice = getComputerChoice();
         let outcome = computeRound(playerChoice, computerChoice);
         console.log(`${playerChoice} X ${computerChoice}: ${outcomeMessages[outcome]}`);
+        
+        if (outcome === "won") {
+            playerScore++;
+        } else if (outcome === "lost") {
+            computerScore++;
+        }
     }
-    console.log("End of game.")
+
+    let finalResult;
+    if (playerScore === rounds) {
+        finalResult = "Player got a Queen Sweep!"
+    } else if (playerScore > computerScore) {
+        finalResult = "Player won!"
+    } else if (playerScore < computerScore) {
+        finalResult = "Player Lost!"
+    } else {
+        finalResult = "It was a Draw!"
+    }
+
+    console.log(`End of game. Total score: ${playerScore} x ${computerScore}. ${finalResult}`)
 }
 
 game(5);
