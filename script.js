@@ -1,5 +1,12 @@
 const choices = ["rock", "paper", "scissors"];
 
+const outcomes = {
+    draw: "It's a draw.",
+    won: "Player won.",
+    lost: "Player lost."
+}
+
+
 function getComputerChoice() {
     let chosen_index = Math.floor(3 * Math.random());
     return choices[chosen_index];
@@ -23,17 +30,17 @@ function getPlayerChoice() {
 }
 
 function computeRound(playerChoice, computerChoice) {
-    let message;
+    let result;
     if (playerChoice === computerChoice) {
-        message = `Draw! (${playerChoice})`;
+        result = "draw";
     } else if (playerChoice === "rock" && computerChoice === "scissors") {
-        message = `Player won! ${playerChoice} beats ${computerChoice}`;
+        result = "won"
     } else if (playerChoice === "paper" && computerChoice === "rock") {
-        message = `Player won! ${playerChoice} beats ${computerChoice}`;
+        result = "won"
     } else if (playerChoice === "scissors" && computerChoice === "paper") {
-        message = `Player won! ${playerChoice} beats ${computerChoice}`;
+        result = "won"
     } else {
-        message = `Player loses! ${computerChoice} beats ${playerChoice}`;
+        result = "lost"
     }
-    return message;
+    return result;
 }
