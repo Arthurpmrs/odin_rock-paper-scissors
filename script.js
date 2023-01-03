@@ -1,6 +1,6 @@
 const choices = ["rock", "paper", "scissors"];
 
-const outcomes = {
+const outcomeMessages = {
     draw: "It's a draw.",
     won: "Player won.",
     lost: "Player lost."
@@ -30,17 +30,32 @@ function getPlayerChoice() {
 }
 
 function computeRound(playerChoice, computerChoice) {
-    let result;
+    let outcome;
     if (playerChoice === computerChoice) {
-        result = "draw";
+        outcome = "draw";
     } else if (playerChoice === "rock" && computerChoice === "scissors") {
-        result = "won"
+        outcome = "won"
     } else if (playerChoice === "paper" && computerChoice === "rock") {
-        result = "won"
+        outcome = "won"
     } else if (playerChoice === "scissors" && computerChoice === "paper") {
-        result = "won"
+        outcome = "won"
     } else {
-        result = "lost"
+        outcome = "lost"
     }
-    return result;
+    return outcome;
 }
+
+function game(rounds) {
+    for (let i = 0; i < rounds; i++) {
+        const playerChoice = getPlayerChoice();
+        if (playerChoice === null) {
+            break;
+        }
+        const computerChoice = getComputerChoice();
+        let outcome = computeRound(playerChoice, computerChoice);
+        console.log(`${playerChoice} X ${computerChoice}: ${outcomeMessages[outcome]}`);
+    }
+    console.log("End of game.")
+}
+
+game(5);
