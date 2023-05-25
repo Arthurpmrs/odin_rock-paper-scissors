@@ -11,6 +11,11 @@ body {
     overflow-y: hidden;
 }
 
+h3 {
+    margin: 0px;
+    padding: 0px;
+}
+
 button {
     font-weight: 900;
     padding: 10px 45px;
@@ -43,37 +48,109 @@ button[disabled] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 60px;
+    margin-top: 20px;
+}
+
+.scores {
+    display: flex;
+    width: 600px;
+    font-size: 35px;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 42px;
+}
+
+.scores .flex-start,
+.scores .flex-end {
+    display: flex;
+    flex: 1;
+}
+
+.scores .flex-start {
+    justify-content: flex-end;
+}
+
+.scores .flex-end {
+    justify-content: flex-start;
+}
+
+.scores .score {
+    background-color: rgb(141, 24, 250);
+    padding: 6px 6px;
+    margin: 0px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    /* Remove white space below span */
+    height: 0.8em;
+    line-height: 1em;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.choices {
+    margin-top: 16px;
 }
 
 .results {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #404040;
+    flex-wrap: wrap;
     border-radius: 16px;
     width: 600px;
-    height: 350px;
-    margin: 16px 0px;
+    max-height: 400px;
+    overflow-y: scroll;
+    margin: 0px 0px;
+    gap: 12px 25px;
 }
 
-.results h3 {
-    margin: 22px 0px 30px 0px;
+.history-title {
+    margin: 36px 0px 6px 0px;
 }
 
-.result {
+.result-card {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    background-color: #404040;
+    padding: 16px 16px;
+    border-radius: 12px;
+    width: 180px;
+    height: 90px;
+}
+
+.result-card .number {
+    border-right: 2px solid #fff;
+    padding-right: 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.result-card .content {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    font-size: 1rem;
-    margin-bottom: 10px;
+    margin-left: auto;
 }
 
-.result h5 {
-    margin: 0;
-    padding: 0;
+.result-card .round-result {
+    font-size: 1.25rem;
 }
+
+.emoji {
+    font-size: 1.75rem
+}
+
+.result-card .message {
+    font-size: 0.75rem;
+    font-weight: 900;
+}
+
+
 
 .game-result {
     display: flex;
@@ -91,15 +168,4 @@ button[disabled] {
 .game-result span {
     font-weight: bold;
     line-height: 0;
-}
-
-
-.scores .score {
-    background-color: rgb(141, 24, 250);
-    padding: 6px 6px;
-    border-radius: 6px;
-    display: inline-block;
-    /* Remove white space below span */
-    height: 0.8em;
-    line-height: 1em;
 }

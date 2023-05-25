@@ -1,5 +1,13 @@
 const choices = ["rock", "paper", "scissors"];
-
+// const emojis = {
+//     emojisList: ["✋", "✊", "✌"],
+//     index: 0
+// }
+const emojis = {
+    rock: "✊",
+    paper: "✋",
+    scissors: "✌"
+}
 const outcomeMessages = {
     draw: "It's a draw.",
     won: "Player won.",
@@ -12,6 +20,21 @@ const scores = {
     computer: 0
 }
 
+// setInterval(shuffleTitleEmoji, 100);
+
+// function shuffleTitleEmoji() {
+//     const emojiSpan = document.querySelector("span.emoji");
+//     // console.log(emojis[chosen_index])
+//     // console.log(emojiSpan.innerText);
+//     emojiSpan.innerText = emojis.emojisList[emojis.index];
+//     if (emojis.index + 1 >= 3) {
+//         emojis.index = 0;
+//     } else {
+//         emojis.index++;
+//     }
+// }
+
+
 const choiceButtons = document.querySelectorAll(".choices > button");
 choiceButtons.forEach(choice => {
     choice.addEventListener("click", computeRound);
@@ -22,38 +45,63 @@ function getComputerChoice() {
     return choices[chosen_index];
 }
 
+function updateScoreBoard(scores) {
+    const playerScore = document.querySelector(".player .score");
+    const computerScore = document.querySelector(".computer .score");
+    playerScore.innerText = scores.player;
+    computerScore.innerText = scores.computer;
+}
+
 function displayRoundResult(round, playerChoice, computerChoice, outcome) {
     const results = document.querySelector(".results");
 
     const result = document.createElement("div");
-    result.classList.add("result");
+    result.classList.add("result-card");
     result.innerHTML = `
-        <div class="result-info">
-            <span>Round ${round}: </span>
-            <span>${playerChoice} vs ${computerChoice}</span>
+        <div class="number">
+            ${round}
         </div>
-        <h5>${outcome}</h5>
+        <div class="content">
+            <div class="round-result">
+                <span class="emoji">${emojis[playerChoice]}</span>
+                vs
+                <span class="emoji">${emojis[computerChoice]}</span>
+            </div>
+            <div class="message">${outcome}</div>
+        </div>
     `;
     results.appendChild(result);
 }
 
 function displayGameResult(scores, gameResult) {
-    const container = document.querySelector(".container");
+    const info = document.querySelector(".container .info");
 
-    const gameResultCard = document.createElement("div");
-    gameResultCard.classList.add("game-result");
-    gameResultCard.innerHTML = `
-        <div class="scores">
-            <span>Player </span>
-            <span class="score">${scores.player}</span>
-            <span>vs</span>
-            <span class="score">${scores.computer}</span>
-            <span>Computer</span>
-        </div>
-        <span>${gameResult}</span>
-    `;
+    const title = info.querySelector("h3");
+    title.innerText = gameResult;
 
-    container.appendChild(gameResultCard);
+    info.querySelector("div").remove();
+
+
+
+
+
+
+    // const container = document.querySelector(".container");
+
+    // const gameResultCard = document.createElement("div");
+    // gameResultCard.classList.add("game-result");
+    // gameResultCard.innerHTML = `
+    //     <div class="scores">
+    //         <span>Player </span>
+    //         <span class="score">${scores.player}</span>
+    //         <span>vs</span>
+    //         <span class="score">${scores.computer}</span>
+    //         <span>Computer</span>
+    //     </div>
+    //     <span>${gameResult}</span>
+    // `;
+
+    // container.appendChild(gameResultCard);
 }
 
 function setEndGameState() {
@@ -80,7 +128,7 @@ function resetGame() {
     scores.computer = 0;
 
     const displayDiv = document.querySelector(".results");
-    displayDiv.innerHTML = "<h3>Round History</h3>";
+    displayDiv.innerHTML = "";
 
     const choices = document.querySelector(".choices");
     const choiceButtons = choices.querySelectorAll("button");
@@ -91,8 +139,11 @@ function resetGame() {
     const resetButton = document.getElementById("reset-button");
     resetButton.remove();
 
-    const resultCard = document.querySelector(".game-result");
-    resultCard.remove();
+    const info = document.querySelector(".container .info");
+    info.innerHTML = `
+        <h3>Round <span id="round-counter">1</span></h3>
+        <div>Make your choice!</div>
+    `
 }
 
 function computeRoundOutcome(playerChoice, computerChoice) {
@@ -113,9 +164,7 @@ function computeRoundOutcome(playerChoice, computerChoice) {
 
 function computeFinalResult(scores, rounds) {
     let gameResult;
-    if (scores.player === rounds) {
-        gameResult = "Player got a Queen Sweep!"
-    } else if (scores.player > scores.computer) {
+    if (scores.player > scores.computer) {
         gameResult = "Player won!"
     } else if (scores.player < scores.computer) {
         gameResult = "Player Lost!"
@@ -144,9 +193,14 @@ function computeRound(event) {
         outcomeMessages[outcome]
     );
 
-    if (rounds == 5) {
+    updateScoreBoard(scores);
+
+    if (scores.player == 5 || scores.computer == 5) {
         let gameResult = computeFinalResult(scores, rounds);
         displayGameResult(scores, gameResult);
         setEndGameState();
+    } else {
+        const roundCounter = document.getElementById("round-counter");
+        roundCounter.innerText = rounds + 1;
     }
 }
