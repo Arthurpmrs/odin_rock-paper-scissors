@@ -14,7 +14,7 @@ function getComputerChoice() {
 
 function getPlayerChoice() {
     let choice;
-    
+
     while (true) {
         choice = prompt("Enter your choice (Rock, paper or scissors): ");
 
@@ -58,7 +58,7 @@ function game(rounds) {
         const computerChoice = getComputerChoice();
         let outcome = computeRound(playerChoice, computerChoice);
         console.log(`${playerChoice} X ${computerChoice}: ${outcomeMessages[outcome]}`);
-        
+
         if (outcome === "won") {
             playerScore++;
         } else if (outcome === "lost") {
@@ -80,4 +80,4 @@ function game(rounds) {
     console.log(`End of game. Total score: ${playerScore} x ${computerScore}. ${finalResult}`)
 }
 
-game(5);
+// game(5);
