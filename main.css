@@ -95,6 +95,10 @@ button[disabled] {
     margin-top: 16px;
 }
 
+.result-title {
+    margin: 36px 0px 6px 0px;
+}
+
 .results {
     display: flex;
     flex-wrap: wrap;
@@ -106,9 +110,7 @@ button[disabled] {
     gap: 12px 25px;
 }
 
-.history-title {
-    margin: 36px 0px 6px 0px;
-}
+
 
 .result-card {
     box-sizing: border-box;
@@ -148,24 +150,4 @@ button[disabled] {
 .result-card .message {
     font-size: 0.75rem;
     font-weight: 900;
-}
-
-
-
-.game-result {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-sizing: border-box;
-    margin-top: 16px;
-    width: 600px;
-    background-color: rgb(163, 70, 250);
-    border-radius: 12px;
-    padding: 30px 35px;
-
-}
-
-.game-result span {
-    font-weight: bold;
-    line-height: 0;
 }

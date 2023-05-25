@@ -1,8 +1,5 @@
+// Constants and Data
 const choices = ["rock", "paper", "scissors"];
-// const emojis = {
-//     emojisList: ["✋", "✊", "✌"],
-//     index: 0
-// }
 const emojis = {
     rock: "✊",
     paper: "✋",
@@ -14,27 +11,14 @@ const outcomeMessages = {
     lost: "Player lost."
 }
 
+// Variables
 let rounds = 0;
 const scores = {
     player: 0,
     computer: 0
 }
 
-// setInterval(shuffleTitleEmoji, 100);
-
-// function shuffleTitleEmoji() {
-//     const emojiSpan = document.querySelector("span.emoji");
-//     // console.log(emojis[chosen_index])
-//     // console.log(emojiSpan.innerText);
-//     emojiSpan.innerText = emojis.emojisList[emojis.index];
-//     if (emojis.index + 1 >= 3) {
-//         emojis.index = 0;
-//     } else {
-//         emojis.index++;
-//     }
-// }
-
-
+// Eventlistener
 const choiceButtons = document.querySelectorAll(".choices > button");
 choiceButtons.forEach(choice => {
     choice.addEventListener("click", computeRound);
@@ -73,35 +57,13 @@ function displayRoundResult(round, playerChoice, computerChoice, outcome) {
     results.appendChild(result);
 }
 
-function displayGameResult(scores, gameResult) {
+function displayGameResult(gameResult) {
     const info = document.querySelector(".container .info");
 
     const title = info.querySelector("h3");
     title.innerText = gameResult;
 
     info.querySelector("div").remove();
-
-
-
-
-
-
-    // const container = document.querySelector(".container");
-
-    // const gameResultCard = document.createElement("div");
-    // gameResultCard.classList.add("game-result");
-    // gameResultCard.innerHTML = `
-    //     <div class="scores">
-    //         <span>Player </span>
-    //         <span class="score">${scores.player}</span>
-    //         <span>vs</span>
-    //         <span class="score">${scores.computer}</span>
-    //         <span>Computer</span>
-    //     </div>
-    //     <span>${gameResult}</span>
-    // `;
-
-    // container.appendChild(gameResultCard);
 }
 
 function setEndGameState() {
@@ -162,7 +124,7 @@ function computeRoundOutcome(playerChoice, computerChoice) {
     return outcome;
 }
 
-function computeFinalResult(scores, rounds) {
+function computeFinalResult(scores) {
     let gameResult;
     if (scores.player > scores.computer) {
         gameResult = "Player won!"
@@ -196,8 +158,8 @@ function computeRound(event) {
     updateScoreBoard(scores);
 
     if (scores.player == 5 || scores.computer == 5) {
-        let gameResult = computeFinalResult(scores, rounds);
-        displayGameResult(scores, gameResult);
+        let gameResult = computeFinalResult(scores);
+        displayGameResult(gameResult);
         setEndGameState();
     } else {
         const roundCounter = document.getElementById("round-counter");
