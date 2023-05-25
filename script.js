@@ -6,7 +6,6 @@ const outcomeMessages = {
     lost: "Player lost."
 }
 
-const roundResults = [];
 let rounds = 0;
 const scores = {
     player: 0,
@@ -23,85 +22,17 @@ function getComputerChoice() {
     return choices[chosen_index];
 }
 
-// function getPlayerChoice() {
-//     let choice;
-
-//     while (true) {
-//         choice = prompt("Enter your choice (Rock, paper or scissors): ");
-
-//         if (choice == "" || choice == null) {
-//             return null;
-//         } else if (!(choices.includes(choice.toLowerCase()))) {
-//             alert("Invalid entry. Try again!");
-//         } else {
-//             return choice.toLocaleLowerCase();
-//         }
-//     }
-
-// }
-
-// function computeRound(playerChoice, computerChoice) {
-//     let outcome;
-//     if (playerChoice === computerChoice) {
-//         outcome = "draw";
-//     } else if (playerChoice === "rock" && computerChoice === "scissors") {
-//         outcome = "won"
-//     } else if (playerChoice === "paper" && computerChoice === "rock") {
-//         outcome = "won"
-//     } else if (playerChoice === "scissors" && computerChoice === "paper") {
-//         outcome = "won"
-//     } else {
-//         outcome = "lost"
-//     }
-//     return outcome;
-// }
-
-// function game(rounds) {
-//     let computerScore = 0;
-//     let playerScore = 0;
-
-//     for (let i = 0; i < rounds; i++) {
-//         const playerChoice = getPlayerChoice();
-//         if (playerChoice === null) {
-//             console.log("Game interrupted.")
-//             return false;
-//         }
-//         const computerChoice = getComputerChoice();
-//         let outcome = computeRound(playerChoice, computerChoice);
-//         console.log(`${playerChoice} X ${computerChoice}: ${outcomeMessages[outcome]}`);
-
-//         if (outcome === "won") {
-//             playerScore++;
-//         } else if (outcome === "lost") {
-//             computerScore++;
-//         }
-//     }
-
-//     let finalResult;
-//     if (playerScore === rounds) {
-//         finalResult = "Player got a Queen Sweep!"
-//     } else if (playerScore > computerScore) {
-//         finalResult = "Player won!"
-//     } else if (playerScore < computerScore) {
-//         finalResult = "Player Lost!"
-//     } else {
-//         finalResult = "It was a Draw!"
-//     }
-
-//     console.log(`End of game. Total score: ${playerScore} x ${computerScore}. ${finalResult}`)
-// }
-
-function displayResultsMessage(round, playerChoice, computerChoice, outcome) {
+function displayRoundResult(round, playerChoice, computerChoice, outcome) {
     const results = document.querySelector(".results");
 
     const result = document.createElement("div");
     result.classList.add("result");
     result.innerHTML = `
-    <div class="result-info">
-        <span>Round ${round}: </span>
-        <span>${playerChoice} vs ${computerChoice}</span>
-    </div>
-    <h5>${outcome}</h5>
+        <div class="result-info">
+            <span>Round ${round}: </span>
+            <span>${playerChoice} vs ${computerChoice}</span>
+        </div>
+        <h5>${outcome}</h5>
     `;
     results.appendChild(result);
 }
@@ -112,21 +43,22 @@ function displayGameResult(scores, gameResult) {
     const gameResultCard = document.createElement("div");
     gameResultCard.classList.add("game-result");
     gameResultCard.innerHTML = `
-    <div class="scores">
-        <span>Player </span>
-        <span class="score">${scores.player}</span>
-        <span>vs</span>
-        <span class="score">${scores.computer}</span>
-        <span>Computer</span>
-    </div>
-    <span>${gameResult}</span>
-    `
+        <div class="scores">
+            <span>Player </span>
+            <span class="score">${scores.player}</span>
+            <span>vs</span>
+            <span class="score">${scores.computer}</span>
+            <span>Computer</span>
+        </div>
+        <span>${gameResult}</span>
+    `;
 
     container.appendChild(gameResultCard);
 }
 
-function setEndState() {
+function setEndGameState() {
     const choices = document.querySelector(".choices");
+
     const choiceButtons = choices.querySelectorAll("button");
     choiceButtons.forEach(choice => {
         choice.setAttribute("disabled", "");
@@ -138,11 +70,11 @@ function setEndState() {
     resetButton.addEventListener("click", event => {
         resetGame();
     })
+
     choices.appendChild(resetButton);
 }
 
 function resetGame() {
-    roundResults.length = 0;
     rounds = 0;
     scores.player = 0;
     scores.computer = 0;
@@ -163,10 +95,8 @@ function resetGame() {
     resultCard.remove();
 }
 
-function computeRound(event) {
-    const playerChoice = event.target.innerText.toLowerCase();
-    const computerChoice = getComputerChoice();
-
+function computeRoundOutcome(playerChoice, computerChoice) {
+    let outcome;
     if (playerChoice === computerChoice) {
         outcome = "draw";
     } else if (playerChoice === "rock" && computerChoice === "scissors") {
@@ -178,8 +108,29 @@ function computeRound(event) {
     } else {
         outcome = "lost"
     }
+    return outcome;
+}
 
-    roundResults.push({ playerChoice: playerChoice, computerChoice: computerChoice })
+function computeFinalResult(scores, rounds) {
+    let gameResult;
+    if (scores.player === rounds) {
+        gameResult = "Player got a Queen Sweep!"
+    } else if (scores.player > scores.computer) {
+        gameResult = "Player won!"
+    } else if (scores.player < scores.computer) {
+        gameResult = "Player Lost!"
+    } else {
+        gameResult = "It was a Draw!"
+    }
+    return gameResult;
+}
+
+function computeRound(event) {
+    const playerChoice = event.target.innerText.toLowerCase();
+    const computerChoice = getComputerChoice();
+
+    const outcome = computeRoundOutcome(playerChoice, computerChoice);
+
     rounds++;
 
     if (outcome === "won") {
@@ -188,21 +139,14 @@ function computeRound(event) {
         scores.computer++;
     }
 
-    displayResultsMessage(rounds, playerChoice, computerChoice, outcomeMessages[outcome]);
+    displayRoundResult(
+        rounds, playerChoice, computerChoice,
+        outcomeMessages[outcome]
+    );
 
     if (rounds == 5) {
-        let gameResult;
-        if (scores.player === rounds) {
-            gameResult = "Player got a Queen Sweep!"
-        } else if (scores.player > scores.computer) {
-            gameResult = "Player won!"
-        } else if (scores.player < scores.computer) {
-            gameResult = "Player Lost!"
-        } else {
-            gameResult = "It was a Draw!"
-        }
-
+        let gameResult = computeFinalResult(scores, rounds);
         displayGameResult(scores, gameResult);
-        setEndState();
+        setEndGameState();
     }
 }
